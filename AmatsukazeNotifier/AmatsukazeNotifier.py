@@ -9,6 +9,7 @@ import config
 from utils import Utils
 from sendline import Line
 from sendtwitter import Twitter
+from senddiscord import Discord
 
 def main():
 
@@ -155,6 +156,31 @@ def main():
             print('[DirectMessage] Message: https://twitter.com/messages/' + 
                 result_directmessage['event']['message_create']['target']['recipient_id'] + '-' +
                 result_directmessage['event']['message_create']['sender_id'], end = '\n\n')
+
+    # Discord Webhook にメッセージを送信
+    if ('Discord' in config.NOTIFY_TYPE):
+
+        discord = Discord(config.DISCORD_WEBHOOK_URL)
+
+        try:
+            result_discord = discord.send_message(message)
+        except Exception as error:
+            print('[Discord] Result: Failed')
+            print('[Discord] ' + colorama.Fore.RED + 'Error: ' + str(error), end = '\n\n') # error.args[0] だとキーエラーになる場合があるため str(error) に変更
+        else:
+            if 'error' in result_discord: # エラーレスポンスの場合
+                print('[Discord] Result: Failed (Code: ' + str(result_discord.get('status_code', 'N/A')) + ')')
+                print('[Discord] ' + colorama.Fore.RED + 'Error: ' + result_discord.get('message', 'Unknown error'), end = '\n\n')
+                if 'details' in result_discord:
+                    print('[Discord] Details: ' + str(result_discord['details']), end = '\n\n')
+            elif result_discord.get('status_code') is not None and result_discord['status_code'] >= 400 : # HTTPエラーコードの場合
+                print('[Discord] Result: Failed (Code: ' + str(result_discord['status_code']) + ')')
+                print('[Discord] ' + colorama.Fore.RED + 'Error: ' + result_discord.get('text', result_discord.get('message', 'Unknown error')), end = '\n\n')
+            else:
+                # 成功
+                print('[Discord] Result: Success (Code: ' + str(result_discord.get('status_code', 'N/A')) + ')')
+                if result_discord.get('message'):
+                    print('[Discord] Message: ' + result_discord['message'], end = '\n\n')
 
 
 if __name__ == '__main__':

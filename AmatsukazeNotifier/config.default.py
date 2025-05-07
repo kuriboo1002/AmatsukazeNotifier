@@ -10,17 +10,18 @@
 
 
 # 通知タイプ
-# LINE (LINE Notify)・Tweet (ツイート)・DirectMessage (ダイレクトメッセージ) から設定
+# LINE (LINE Notify)・Tweet (ツイート)・DirectMessage (ダイレクトメッセージ)・Discord (Discord Webhook) から設定
 # [] 内にカンマ区切りで複数設定できます
 
 # ex (LINE): NOTIFY_TYPE = ['LINE']
 # ex (ツイート): NOTIFY_TYPE = ['Tweet']
 # ex (ダイレクトメッセージ): NOTIFY_TYPE = ['DirectMessage']
+# ex (Discord): NOTIFY_TYPE = ['Discord']
 # ex (LINE とツイート): NOTIFY_TYPE = ['LINE', 'Tweet']
 # ex (LINE とダイレクトメッセージ): NOTIFY_TYPE = ['LINE', 'DirectMessage']
-# ex (全て): NOTIFY_TYPE = ['LINE', 'Tweet', 'DirectMessage']
+# ex (全て): NOTIFY_TYPE = ['LINE', 'Tweet', 'DirectMessage', 'Discord']
 
-NOTIFY_TYPE = ['LINE', 'Tweet', 'DirectMessage']
+NOTIFY_TYPE = ['LINE', 'Tweet', 'DirectMessage', 'Discord']
 
 
 # 通知を行うイベント
@@ -106,6 +107,12 @@ ErrorMessage = 'エラー: $ERROR_MESSAGE$'
 
 # LINE Notify のアクセストークン
 LINE_ACCESS_TOKEN = 'YOUR_LINE_ACCESS_TOKEN'
+
+
+# ==================  Discord Webhook  ==================
+
+# Discord の Webhook URL
+DISCORD_WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL'
 
 
 # ==================  Twitter API  ==================
