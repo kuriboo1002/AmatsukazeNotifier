@@ -24,7 +24,7 @@ class Discord:
             # Sending text-only (application/json)
             response = requests.post(self.webhook_url, json=payload_content)
 
-            # Attempt to return JSON response, similar to sendline.py
+            # Attempt to return JSON response.
             # Discord error responses are JSON. Successful (204 No Content) might not be.
             if response.content: # Check if there's any content in the response
                 try:

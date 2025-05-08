@@ -3,14 +3,13 @@
 
 ![Screenshot](https://github.com/nukemiri/AmatsukazeNotifier/blob/images/Readme/01.jpg)
 
-Amatsukaze から LINE や Twitter（ツイート・DM）に通知を送れるツールです。
+Amatsukaze から Twitter（ツイート・DM）や Discord に通知を送れるツールです。
 
 ## About・Feature
 
 [Amatsukaze](https://github.com/nekopanda/Amatsukaze) のバッチファイル実行機能を使い、
 
 
-- LINE (LINE Notify)
 - Twitter (ツイート)
 - Twitter (ダイレクトメッセージ)
 - Discord (Webhook)
@@ -22,13 +21,12 @@ Amatsukaze のバッチファイル実行機能を利用しているため、変
 
 たとえば、Amatsukaze でエンコードが開始された旨を通知したり、実行結果の一部の情報を送信するといった事が可能です。
 
-LINE への通知は LINE Notify を使って送信します。  
-LINE Notify はアプリケーションからの通知を指定したユーザーやグループで受信することができるサービスです。  
-通知メッセージは LINE Notify の公式アカウントから受信できます（一度使ってみたほうが早いかも）。
-
 Twitter への通知はツイートでの通知に加え、ダイレクトメッセージでの送信も可能です。  
 ダイレクトメッセージは自分宛てに送ることも、DM を送信できる他のアカウントに送ることもできます。  
 たとえば、録画通知用の Twitter アカウントを作ってメインアカウントと相互フォローになり、録画通知用のアカウントからメインアカウント宛てに通知を送ることもできます。
+
+Discordへの通知はWebhook機能を使って送信します。
+WebhookはDiscord内で作成して、特定のチャンネルに通知を送るための機能です。
 
 通知できるイベントは、
 
@@ -133,8 +131,8 @@ Amatsukaze/bat/ に追加した .bat ファイルはAmatsukazeに自動で認識
 ## Usage
 
 AmatsukazeNotifier の設定は AmatsukazeNotifier フォルダ内の config.py にて行います。  
-LINE Notify へ通知する場合は LINE Notify のアクセストークンが、Twitter へ通知する場合は Twitter API アプリが、Discord へ通知する場合は Discord の Webhook URL が必須になります。  
-LINE Notify のアクセストークンの作成には LINE へのログインが、Twitter API アプリの作成には Twitter の開発者アカウントがそれぞれ必要です。 
+Twitter へ通知する場合は Twitter API アプリが、Discord へ通知する場合は Discord の Webhook URL が必須になります。  
+Twitter API アプリの作成には Twitter の開発者アカウントが必要です。 
 
 ### 1. 設定
 
@@ -142,8 +140,8 @@ config.py を<u>文字コード UTF-8 (BOM 無し)・改行コード LF で編�
 メモ帳は Windows10 1903 以前のものでは UTF-8 (BOM 無し)・LF で保存できなかったり、またシンタックスハイライトもないため避けてください。  
 できれば VSCode などのシンタックスハイライトや lint のあるエディタでの編集を推奨します。
 
-**通知タイプ** (NOTIFY_TYPE) では、LINE (LINE Notify)・Tweet (ツイート)・DirectMessage (ダイレクトメッセージ)・Discord (Webhook) から通知するものを選択します。  
-デフォルト … `['LINE', 'Tweet', 'DirectMessage']` (Discord を利用する場合は `['LINE', 'Tweet', 'DirectMessage', 'Discord']` のように追加してください)
+**通知タイプ** (NOTIFY_TYPE) では、Tweet (ツイート)・DirectMessage (ダイレクトメッセージ)・Discord (Webhook) から通知するものを選択します。  
+デフォルト … `['Tweet', 'DirectMessage']` (Discord を利用する場合は `['Tweet', 'DirectMessage', 'Discord']` のように追加してください)
 
 **通知を行うイベント** (NOTIFY_EVENT) では、通知するイベントのオン・オフを設定できます。  
 ここで設定したイベントだけが通知されます。たとえば頻度の多い PostNotify だけ通知しない設定も可能です。  
@@ -312,38 +310,7 @@ Amatsukazeからエラーが出力された際には \[エラー: DRCSマッピ�
 デフォルトのように絵文字も送信できます（ただ新しい絵文字だと端末側で表示できなかったりするので注意）。  
 カスタマイズしたい方は、お好みの通知メッセージへ変更してみてください。
 
-### 3. LINE Notify
-
-LINE Notify へ通知しない場合は必要ありませんが、後述する Twitter の開発者アカウントを作成する手順よりもはるかに簡単なので、やっておくことをおすすめします（さほど手間もかかりません）。
-
-[LINE Notify](https://notify-bot.line.me/ja/) にアクセスし、右上の \[ログイン] から LINE へログインします（いつも使っているアカウントで構いません）。  
-ログインできたら、右上のメニューから \[マイページ] に移動します。
-
-![Screenshot](https://github.com/nukemiri/AmatsukazeNotifier/blob/images/Readme/07.png)
-
-下の方にある「アクセストークンの発行(開発者向け)」へ行き、 \[トークンを発行する] をクリックします。
-
-![Screenshot](https://github.com/nukemiri/AmatsukazeNotifier/blob/images/Readme/08.png)
-
-トークン名は LINE Notify で通知が送られてきたときに \[AmatsukazeNotifier] のように付加される文字列です（ LINE Notify 全体でユニークである必要はないらしい）。  
-通知を送信するトークルームは \[1:1 で LINE Notify から通知を受ける] か、任意のグループ LINE を選択してください。  
-ここでは「1:1 で LINE Notify から通知を受ける」（現在ログインしているアカウントに届く）を選択します。 
-
-![Screenshot](https://github.com/nukemiri/AmatsukazeNotifier/blob/images/Readme/09.png)
-
- \[発行する] をクリックするとアクセストークンが発行されるので、 \[コピー] をクリックしてクリップボードにコピーします。  
-アクセストークンはこの画面を閉じると二度と表示されない（一度解除し同じ内容でもう一度発行することはできるがアクセストークンは変わる）ので、どこかにメモしておくと良いでしょう。
-
-![Screenshot](https://github.com/nukemiri/AmatsukazeNotifier/blob/images/Readme/10.png)
-
-画面を閉じると LINE Notify と設定したトークルームが連携されているはずです。
-
-最後に config.py を開き、先程クリップボードにコピーしたアクセストークンを \[LINE Notify] セクションの **LINE_ACCESS_TOKEN** に設定します。
-
-これで、LINE Notify に通知を送信できる状態になりました！ 
-
-
-### 4. Discord (Webhook)
+### 3. Discord (Webhook)
 
 Discord へ通知する場合は、通知を送信したい Discord サーバーのチャンネルで Webhook URL を取得する必要があります。
 
@@ -367,7 +334,7 @@ Discord へ通知する場合は、通知を送信したい Discord サーバー
 通知タイプ `NOTIFY_TYPE` に `'Discord'` を追加するのを忘れないでください。
 
 
-### 5. Twitter (ツイート・ダイレクトメッセージ)
+### 4. Twitter (ツイート・ダイレクトメッセージ)
 
 Twitter へ通知する場合は Twitter へ開発者登録を申請し、開発者アカウントを取得しておく必要があります（Twitter Developer アプリケーションの作成に Twitter の開発者アカウントが必要なため）。  
 ただ、悪用する人が多かったため今から登録するのはちょっと面倒になっています。これでも最近若干緩和されたらしいけど…

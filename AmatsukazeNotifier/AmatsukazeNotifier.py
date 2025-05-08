@@ -7,7 +7,6 @@ from pprint import pprint
 
 import config
 from utils import Utils
-from sendline import Line
 from sendtwitter import Twitter
 from senddiscord import Discord
 
@@ -93,26 +92,6 @@ def main():
     #絵文字を無視して絵文字を無視してコンソールに出力
     print(("Message: " + message.replace("\n", "\n                 ")).encode('cp932','ignore').decode("cp932"), end = "\n\n")
 
-
-    # LINE Notify にメッセージを送信
-    if ('LINE' in config.NOTIFY_TYPE):
-
-        line = Line(config.LINE_ACCESS_TOKEN)
-
-        try:
-            result_line = line.send_message(message, image = image)
-        except Exception as error:
-            print('[LINE Notify] Result: Failed')
-            print('[LINE Notify] ' + colorama.Fore.RED + 'Error: ' + error.args[0], end = '\n\n')
-        else:
-            if result_line['status'] != 200:
-                # ステータスが 200 以外（失敗）
-                print('[LINE Notify] Result: Failed (Code: ' + str(result_line['status']) + ')')
-                print('[LINE Notify] ' + colorama.Fore.RED + 'Error: ' + result_line['message'], end = '\n\n')
-            else:
-                # ステータスが 200（成功）
-                print('[LINE Notify] Result: Success (Code: ' + str(result_line['status']) + ')')
-                print('[LINE Notify] Message: ' + result_line['message'], end = '\n\n')
 
     # Twitter にツイートを送信
     if ('Tweet' in config.NOTIFY_TYPE):
