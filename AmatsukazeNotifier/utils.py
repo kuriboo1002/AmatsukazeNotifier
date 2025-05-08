@@ -289,7 +289,7 @@ class Utils:
     #TSファイルから番組情報の一部を取得
     def get_ts_info(self, ts_path,):
         #rplsinfoのパスを取得
-        rplsinfo = os.path.join(os.getcwd(),"AmatsukazeNotifier","rplsinfo.exe")
+        rplsinfo = os.path.join(os.getcwd(),"rplsinfo.exe")
         print("rplsinfo: "+rplsinfo)
         
         #時間情報を取得
